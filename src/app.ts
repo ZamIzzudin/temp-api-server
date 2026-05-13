@@ -17,6 +17,8 @@ import { seedGenesisAccount } from "./seed";
 
 export const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: config.corsOrigin,

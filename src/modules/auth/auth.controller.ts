@@ -49,10 +49,11 @@ export const authController = {
         return res.status(500).json({ message: "Gagal logout" });
       }
 
+      const isProduction = config.nodeEnv === "production";
       res.clearCookie(config.sessionName, {
         httpOnly: true,
-        sameSite: "lax",
-        secure: config.nodeEnv === "production",
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,
       });
 
       return res.json({ success: true });

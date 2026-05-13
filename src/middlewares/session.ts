@@ -1,6 +1,8 @@
 import session from "express-session";
 import { config } from "../config";
 
+const isProduction = config.nodeEnv === "production";
+
 export const sessionMiddleware = session({
   name: config.sessionName,
   secret: config.sessionSecret,
@@ -8,8 +10,8 @@ export const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: config.nodeEnv === "production",
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     maxAge: config.sessionTtlSeconds * 1000,
   },
   rolling: true,
