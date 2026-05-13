@@ -51,11 +51,17 @@ app.use("/custom-params", customParamRouter);
 
 let initPromise: Promise<void> | null = null;
 
-export const initializeApp = async () => {
+type InitializeOptions = {
+  seedOnBoot?: boolean;
+};
+
+export const initializeApp = async ({ seedOnBoot = false }: InitializeOptions = {}) => {
   if (!initPromise) {
     initPromise = (async () => {
       await prisma.$connect();
-      await seedGenesisAccount();
+      if (seedOnBoot) {
+        await seedGenesisAccount();
+      }
     })();
   }
 

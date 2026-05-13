@@ -2,7 +2,7 @@ import { config } from "./config";
 import { app, initializeApp } from "./app";
 
 const start = async () => {
-  await initializeApp();
+  await initializeApp({ seedOnBoot: true });
 
   app.listen(config.port, () => {
     console.log(`api-server listening on http://localhost:${config.port}`);
