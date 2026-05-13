@@ -14,7 +14,6 @@ import { registrationRouter } from "./modules/registration/registration.route";
 import { customParamRouter } from "./modules/custom-param/custom-param.route";
 import { prisma } from "./lib/prisma";
 import { seedGenesisAccount } from "./seed";
-import { setupSwagger } from "./swagger";
 
 export const app = express();
 
@@ -42,8 +41,6 @@ app.use(sessionMiddleware);
 app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
-
-setupSwagger(app);
 
 app.use("/auth", authRouter);
 app.use("/privileges", privilegeRouter);
