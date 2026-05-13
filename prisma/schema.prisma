@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  username     String
+  email        String    @unique
+  passwordHash String
+  roleId       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  role         Role      @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@map("t_mtr_user")
+}
+
+model Role {
+  id            String            @id @default(uuid())
+  code          String            @unique
+  name          String
+  category      String            @default("internal")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  users         User[]
+  privileges    RoleMenuAction[]
+  registrations Registration[]
+
+  @@map("t_mtr_role")
+}
+
+model Registration {
+  id           String   @id @default(uuid())
+  username     String
+  email        String   @unique
+  passwordHash String
+  roleId       String
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  role         Role     @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@map("t_trx_registration")
+}
+
+model Action {
+  id           String            @id @default(uuid())
+  code         String            @unique
+  name         String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  menuActions  MenuAction[]
+
+  @@map("t_mtr_action")
+}
+
+model Menu {
+  id           String            @id @default(uuid())
+  code         String            @unique
+  name         String
+  path         String?
+  icon         String
+  sortOrder    Int               @default(0)
+  parentMenuId String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  menuActions  MenuAction[]
+  parentMenu   Menu?             @relation("MenuHierarchy", fields: [parentMenuId], references: [id], onDelete: SetNull)
+  subMenus     Menu[]            @relation("MenuHierarchy")
+
+  @@unique([parentMenuId, code])
+  @@map("t_mtr_menu")
+}
+
+model MenuAction {
+  id           String            @id @default(uuid())
+  menuId        String
+  actionId      String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  menu          Menu              @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  action        Action            @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  roleMappings  RoleMenuAction[]
+
+  @@unique([menuId, actionId])
+  @@map("t_mtr_menu_action")
+}
+
+model RoleMenuAction {
+  id           String      @id @default(uuid())
+  roleId        String
+  menuActionId  String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  role          Role        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  menuAction    MenuAction  @relation(fields: [menuActionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, menuActionId])
+  @@map("t_trx_role_menu_action")
+}
+
+model CustomParam {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("t_mtr_custom_param")
+}

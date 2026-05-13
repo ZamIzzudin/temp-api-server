@@ -1,0 +1,916 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_DUMP")
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model acls {
+  id                Int      @id @default(autoincrement())
+  user_type_id      Int?
+  actions_action_id Int?
+  acl_allowed       Boolean?
+  createdAt         DateTime @default(dbgenerated("'2020-09-04 06:46:13.39+00'::timestamp with time zone")) @db.Timestamptz(6)
+  updatedAt         DateTime @default(dbgenerated("'2020-09-04 06:46:13.39+00'::timestamp with time zone")) @db.Timestamptz(6)
+}
+
+model actions {
+  id                Int      @id @default(autoincrement())
+  action_name       String?  @db.VarChar(255)
+  action_key        String?  @db.VarChar(255)
+  modules_module_id Int?
+  createdAt         DateTime @db.Timestamptz(6)
+  updatedAt         DateTime @db.Timestamptz(6)
+}
+
+model activity_logs {
+  id                  Int       @id @default(autoincrement())
+  users_id            Int?
+  activity_log_action String?   @db.VarChar(255)
+  activity_log_data   String?   @db.VarChar(255)
+  createdAt           DateTime  @db.Timestamptz(6)
+  updatedAt           DateTime  @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+}
+
+model animal_type_rates {
+  id                Int       @id @default(autoincrement())
+  animal_type_id    Int?
+  trayek_id         Int?
+  animal_type_rates Decimal?  @db.Decimal(60, 0)
+  createdAt         DateTime  @db.Timestamptz(6)
+  updatedAt         DateTime  @db.Timestamptz(6)
+  deletedAt         DateTime? @db.Timestamptz(6)
+}
+
+model animal_types {
+  id               Int       @id @default(autoincrement())
+  animal_type_name String?   @db.VarChar(255)
+  createdAt        DateTime  @db.Timestamptz(6)
+  updatedAt        DateTime  @db.Timestamptz(6)
+  deletedAt        DateTime? @db.Timestamptz(6)
+}
+
+model animals {
+  id             Int       @id @default(autoincrement())
+  animal_name    String?   @db.VarChar(255)
+  animal_type_id Int?
+  createdAt      DateTime  @db.Timestamptz(6)
+  updatedAt      DateTime  @db.Timestamptz(6)
+  deletedAt      DateTime? @db.Timestamptz(6)
+}
+
+model bank_accounts {
+  id                  Int      @id @default(autoincrement())
+  users_user_id       Int?
+  bank_account_bank   String?  @db.VarChar(255)
+  bank_account_number String?  @db.VarChar(255)
+  bank_account_name   String?  @db.VarChar(255)
+  createdAt           DateTime @db.Timestamptz(6)
+  updatedAt           DateTime @db.Timestamptz(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model berita_acaras {
+  id                          Int       @default(autoincrement()) @db.SmallInt
+  tipe_berita_acara           Int?      @db.SmallInt
+  id_jadwal_kapal             Int?      @db.SmallInt
+  id_dokter                   Int?      @db.SmallInt
+  tanggal_upload              DateTime? @db.Timestamptz(6)
+  filename                    String?   @db.VarChar
+  createdAt                   DateTime? @db.Timestamptz(6)
+  updatedAt                   DateTime? @db.Timestamptz(6)
+  status                      Int?      @default(1) @db.SmallInt
+  tanggal_selesai_pemeriksaan DateTime? @db.Timestamptz(6)
+  deletedAt                   DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+model booking_news {
+  id                             Int       @id @default(autoincrement())
+  booking_code                   String?   @db.VarChar(255)
+  booking_plan_id                Int?
+  booking_quarantine_doc         String?   @db.VarChar(255)
+  quarantine_upload_time         DateTime? @default(dbgenerated("'2024-02-23 07:24:22.404+00'::timestamp with time zone")) @db.Timestamptz(6)
+  health_certificate_doc         String?   @db.VarChar(255)
+  health_certificate_upload_time DateTime? @default(dbgenerated("'2024-02-23 07:24:22.405+00'::timestamp with time zone")) @db.Timestamptz(6)
+  payment_channel_id             Int?
+  payment_doc                    String?   @db.VarChar(255)
+  payment_time                   DateTime? @db.Timestamptz(6)
+  total_payment                  Int?
+  status_code                    Int?
+  status_name                    String?   @db.VarChar(255)
+  created_by                     Int?
+  updated_by                     Int?
+  createdAt                      DateTime  @db.Timestamptz(6)
+  updatedAt                      DateTime  @db.Timestamptz(6)
+  deletedAt                      DateTime? @db.Timestamptz(6)
+}
+
+model booking_plan_details {
+  id                      Int       @id @default(autoincrement())
+  booking_plan_id         Int?
+  animal_id               Int?
+  animal_name             String?   @db.VarChar(255)
+  quota_request           Int?
+  quota_approved          Int?
+  vessel_room_id          Int?
+  vessel_cattle_room_id   Int?
+  vessel_cattle_room_code String?   @db.VarChar(255)
+  schedule_rates          Int?
+  createdAt               DateTime  @db.Timestamptz(6)
+  updatedAt               DateTime  @db.Timestamptz(6)
+  deletedAt               DateTime? @db.Timestamptz(6)
+  schedule_quota_id       Int?
+  schedule_rates_id       Int?
+  status_code             Int?
+  status_name             String?   @db.VarChar
+}
+
+model booking_plan_documents {
+  id              Int       @id @default(autoincrement())
+  booking_plan_id Int?
+  document        String?   @db.VarChar(255)
+  document_name   String?   @db.VarChar(255)
+  document_nomor  String?   @db.VarChar(255)
+  document_date   DateTime? @db.Timestamptz(6)
+  status_code     Int?
+  createdAt       DateTime  @db.Timestamptz(6)
+  updatedAt       DateTime  @db.Timestamptz(6)
+  deletedAt       DateTime? @db.Timestamptz(6)
+  status_name     String?   @db.VarChar(255)
+}
+
+model booking_plan_kleders {
+  id              Int       @id @default(autoincrement())
+  booking_plan_id Int?
+  kleder_name     String?   @db.VarChar
+  createdAt       DateTime  @db.Timestamptz(6)
+  updatedAt       DateTime  @db.Timestamptz(6)
+  deletedAt       DateTime? @db.Timestamptz(6)
+}
+
+model booking_plan_statuses {
+  id                       Int      @id @default(autoincrement())
+  booking_plan_status_name String?  @db.VarChar(255)
+  createdAt                DateTime @db.Timestamptz(6)
+  updatedAt                DateTime @db.Timestamptz(6)
+}
+
+model booking_plans {
+  id                   Int       @id @default(autoincrement())
+  booking_plan_code    String?   @db.VarChar(255)
+  shipper_id           Int?
+  shipper_name         String?   @db.VarChar(255)
+  consignee_id         Int?
+  consignee_name       String?   @db.VarChar(255)
+  operator_id          Int?
+  operator_name        String?   @db.VarChar(255)
+  origin               String?   @db.VarChar(255)
+  destination          String?   @db.VarChar(255)
+  trayek_id            Int?
+  trayek               String?   @db.VarChar(255)
+  schedule_id          Int?
+  schedule_eta         String?   @db.VarChar(255)
+  schedule_etd         String?   @db.VarChar(255)
+  schedule_ata         String?   @db.VarChar(255)
+  schedule_atd         String?   @db.VarChar(255)
+  doctor_name          String?   @db.VarChar(255)
+  vessel_id            Int?
+  vessel_name          String?   @db.VarChar(255)
+  animal_category_id   Int?
+  animal_category_name String?   @db.VarChar(255)
+  animal_type_id       Int?
+  animal_type_name     String?   @db.VarChar(255)
+  status_name          String?   @db.VarChar(255)
+  status_code          Int?
+  createdAt            DateTime  @db.Timestamptz(6)
+  updatedAt            DateTime  @db.Timestamptz(6)
+  deletedAt            DateTime? @db.Timestamptz(6)
+  voyage               Int?
+  updated_by           Int?
+  is_booked            Boolean?  @default(false)
+}
+
+model booking_statuses {
+  id                  Int      @id @default(autoincrement())
+  booking_status_name String?  @db.VarChar(255)
+  createdAt           DateTime @db.Timestamptz(6)
+  updatedAt           DateTime @db.Timestamptz(6)
+}
+
+model bookings {
+  id                               Int       @id @default(autoincrement())
+  booking_code                     String?   @db.VarChar(255)
+  booking_status_id                Int?
+  schedule_id                      Int?
+  shipper_id                       Int?
+  booking_request_quota            Int?
+  booking_approved_quota           Int?
+  schedule_quota_id                Int?
+  user_consignee_id                Int?
+  animal_type_id                   Int?
+  animal_id                        Int?
+  booking_description              String?   @db.VarChar(255)
+  booking_quarantine_number        String?   @db.VarChar(255)
+  booking_quarantine_date          DateTime? @db.Timestamptz(6)
+  booking_quarantine_file          String?   @db.VarChar(255)
+  booking_livestock_number         String?   @db.VarChar(255)
+  booking_livestock_date           DateTime? @db.Timestamptz(6)
+  booking_livestock_file           String?   @db.VarChar(255)
+  booking_payment_due_date         DateTime? @db.Timestamptz(6)
+  booking_payment_file             String?   @db.VarChar(255)
+  booking_payment_date             DateTime? @db.Date
+  booking_bl_number                String?   @db.VarChar(255)
+  booking_si_number                String?   @db.VarChar(255)
+  booking_ro_number                String?   @db.VarChar(255)
+  booking_shipper_taker_name       String?   @db.VarChar(255)
+  booking_shipper_taker_date       DateTime? @db.Date
+  booking_shipper_taker_identity   String?   @db.VarChar(255)
+  booking_consignee_taker_name     String?   @db.VarChar(255)
+  booking_consignee_taker_date     DateTime? @db.Date
+  booking_consignee_taker_identity String?   @db.VarChar(255)
+  createdAt                        DateTime  @db.Timestamptz(6)
+  updatedAt                        DateTime  @db.Timestamptz(6)
+  deletedAt                        DateTime? @db.Timestamptz(6)
+  operator_id_validasi             Int?
+  validasi_date                    DateTime? @db.Timestamptz(6)
+  disnak_id_validasi               Int?
+  validasi_disnak_date             DateTime? @db.Timestamptz(6)
+  alasan                           String?   @db.VarChar
+  status_harga                     Int       @default(2)
+  id_payment_channel               Int?
+  status_bayar                     String?   @default("N") @db.Char(1)
+  expired_date                     DateTime? @db.Timestamptz(6)
+  bukti_bayar                      DateTime? @db.Timestamptz(6)
+  booking_plan_id                  Int?
+  total_payment                    Int?
+  created_by                       Int?
+  health_certificate_number        String?   @db.VarChar
+  health_certificate_date          DateTime? @db.Timestamptz(6)
+  health_certificate_file          String?   @db.VarChar
+  validate_qr_by                   Int?
+  validate_qr_date                 DateTime? @db.Timestamptz(6)
+  is_valid_health_certificate      Boolean?
+  total_payment_fix                Int?
+  is_new_bispro                    Boolean?
+  weight_total                     Int?      @default(0)
+}
+
+model cities {
+  id                    Int      @id @default(autoincrement())
+  city_name             String?  @db.VarChar(255)
+  provinces_province_id Int?
+  createdAt             DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime @default(now()) @db.Timestamptz(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model custom_params {
+  id                      Int       @default(autoincrement())
+  param_value_string      String?   @db.VarChar
+  param_value_date        DateTime? @db.Timestamp(6)
+  master_custom_params_id Int?
+  status                  Int       @default(1)
+  payment_channel_id      Int?
+  description             String?
+  format                  String?   @db.VarChar
+  createdAt               DateTime? @db.Timestamptz(6)
+  deletedAt               DateTime? @db.Timestamptz(6)
+  updatedAt               DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+model depots {
+  id                Int       @id @default(autoincrement())
+  depot_name        String?   @db.VarChar(255)
+  depot_address     String?   @db.VarChar(255)
+  ports_port_id     Int?
+  users_operator_id Int?
+  createdAt         DateTime  @db.Timestamptz(6)
+  updatedAt         DateTime  @db.Timestamptz(6)
+  deletedAt         DateTime? @db.Timestamptz(6)
+}
+
+model hc_details {
+  id             Int       @id @default(autoincrement())
+  hcc_id         Int?
+  room_id        Int?
+  cattle_room_id Int?
+  total          Int?
+  createdAt      DateTime  @db.Timestamptz(6)
+  updatedAt      DateTime  @db.Timestamptz(6)
+  deletedAt      DateTime? @db.Timestamptz(6)
+}
+
+model health_certificate_complain_files {
+  id                  Int       @id @default(autoincrement())
+  booking_id          Int?
+  berita_acara_file   String?   @db.VarChar(255)
+  refund_payment_file String?   @db.VarChar
+  createdAt           DateTime  @db.Timestamptz(6)
+  updatedAt           DateTime  @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+}
+
+model health_certificate_complains {
+  id           Int       @id @default(autoincrement())
+  booking_id   Int?
+  animal_id    Int?
+  animal_name  String?   @db.VarChar(255)
+  total_harga  Int?      @default(0)
+  description  String?   @db.VarChar(255)
+  created_by   Int?
+  createdAt    DateTime  @db.Timestamptz(6)
+  updatedAt    DateTime  @db.Timestamptz(6)
+  deletedAt    DateTime? @db.Timestamptz(6)
+  total_animal Int?      @default(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model import_hewans {
+  id                   Int       @default(autoincrement()) @db.SmallInt
+  id_dokter            Int?
+  id_jadwal_kapal      Int?
+  tgl_waktu_pengecekan DateTime? @db.Timestamp(6)
+  berat_hewan          String?   @db.VarChar
+  nomor_hewan          String?   @db.VarChar
+  kondisi_hewan        String?   @db.VarChar
+  createdAt            DateTime? @db.Timestamptz(6)
+  deletedAt            DateTime? @db.Timestamptz(6)
+  updatedAt            DateTime? @db.Timestamptz(6)
+  status               Int?      @default(1) @db.SmallInt
+  berat_akhir          String?   @db.VarChar
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_berita_acaras {
+  id        Int       @default(autoincrement()) @db.SmallInt
+  nama      String?   @db.VarChar
+  createdAt DateTime? @db.Timestamptz(6)
+  updatedAt DateTime? @db.Timestamptz(6)
+  status    Int?      @default(1) @db.SmallInt
+  deletedAt DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_category_animals {
+  id             Int       @default(autoincrement())
+  id_animal_type Int
+  category_name  String?   @db.VarChar(100)
+  createdAt      DateTime? @db.Timestamptz(0)
+  updatedAt      DateTime? @db.Timestamptz(0)
+  deletedAt      DateTime? @db.Timestamptz(0)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_categorys {
+  id            Int       @default(autoincrement())
+  category_name String?   @db.VarChar(100)
+  createdAt     DateTime? @db.Timestamptz(0)
+  updatedAt     DateTime? @db.Timestamptz(0)
+  deletedAt     DateTime? @db.Timestamptz(0)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_cresidensial_bris {
+  id          Int       @default(autoincrement())
+  client_id   String    @db.VarChar
+  secret_key  String    @db.VarChar
+  operator_id Int
+  status      Int       @default(1)
+  keterangan  String?   @db.VarChar
+  createdAt   DateTime? @db.Timestamptz(6)
+  updatedAt   DateTime? @db.Timestamptz(6)
+  deletedAt   DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_custom_params {
+  id         Int       @default(autoincrement())
+  param_name String?   @db.VarChar
+  type       String?   @db.VarChar
+  status     Int       @default(1)
+  createdaAt DateTime? @db.Timestamptz(6)
+  updatedAt  DateTime? @db.Timestamptz(6)
+  deletedAt  DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_dokters {
+  id                 BigInt    @default(autoincrement())
+  nama_dokter        String?   @db.VarChar
+  surat_ijin_praktek String?   @db.VarChar
+  no_hp              String?   @db.VarChar
+  alamat             String?   @db.VarChar
+  id_provinsi        Int?
+  id_kota            Int?
+  tanggal_lahir      DateTime? @db.Date
+  tempat_lahir       String?   @db.VarChar
+  keterangan         String?   @db.VarChar
+  created_on         DateTime? @db.Timestamp(6)
+  created_by         String?   @db.VarChar
+  status             Int?      @db.SmallInt
+  createdAt          DateTime? @db.Timestamptz(6)
+  updatedAt          DateTime? @db.Timestamptz(6)
+  deletedAt          DateTime? @db.Timestamptz(6)
+  email              String?   @db.VarChar
+  operator_id        Int?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_kode_trayeks {
+  id                  Int       @default(autoincrement())
+  trayek_code         String    @db.VarChar
+  users_operator_id   Int
+  port_origin_id      Int
+  port_destination_id Int
+  tahun               Int
+  status              Int
+  createdAt           DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime? @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_kontraks {
+  id                  Int       @default(autoincrement())
+  tgl_awal_kontrak    DateTime  @db.Date
+  tgl_expired_kontrak DateTime  @db.Date
+  tahun_kontrak       String    @db.VarChar
+  createdAt           DateTime? @db.Timestamptz(6)
+  updatedAt           DateTime? @db.Timestamptz(6)
+  status_kontrak      Int
+  status              Int       @default(1)
+  nomor_kontrak       String    @db.VarChar
+  deletedAt           DateTime? @db.Timestamptz(6)
+  id_operator         Int?
+  filename            String?   @db.VarChar
+
+  @@ignore
+}
+
+model master_rates {
+  id                Int       @id @default(autoincrement())
+  master_rates      Decimal?  @db.Decimal(60, 0)
+  users_operator_id Int?
+  trayek_id         Int?
+  createdAt         DateTime  @db.Timestamptz(6)
+  updatedAt         DateTime  @db.Timestamptz(6)
+  deletedAt         DateTime? @db.Timestamptz(6)
+}
+
+model master_schedules {
+  id                     Int      @id @default(autoincrement())
+  master_trayek_id       Int?
+  vessel_id              Int?
+  master_voyage_id       Int?
+  master_schedule_voyage Int?
+  createdAt              DateTime @db.Timestamptz(6)
+  updatedAt              DateTime @db.Timestamptz(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_surats {
+  id            Int       @default(autoincrement()) @db.SmallInt
+  nama_surat    String?   @db.VarChar
+  nomor_surat   String?   @db.VarChar
+  tanggal_surat DateTime? @db.Timestamp(6)
+  filepath      String?   @db.VarChar
+  id_booking    Int?
+  createdAt     DateTime? @db.Timestamptz(6)
+  updatedAt     DateTime? @db.Timestamptz(6)
+  deletedAt     DateTime? @db.Timestamptz(6)
+  status        String?   @db.VarChar
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model master_tarif {
+  id                  Int       @default(autoincrement())
+  port_origin_id      Int?
+  port_destination_id Int?
+  hewan_besar         Decimal?  @db.Decimal(60, 0)
+  hewan_kecil         Decimal?  @db.Decimal(60, 0)
+  non_ternak          Decimal?  @db.Decimal(60, 0)
+  active              Boolean?
+  description         String?   @db.VarChar
+  createdAt           DateTime  @db.Timestamptz(6)
+  updatedAt           DateTime  @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+  tahun               Decimal?  @db.Decimal(4, 0)
+
+  @@ignore
+}
+
+model master_trayeks {
+  id                   Int       @id @default(autoincrement())
+  master_trayek_code   String?   @db.VarChar(255)
+  users_operator_id    Int?
+  master_trayek_target Int?
+  createdAt            DateTime  @db.Timestamptz(6)
+  updatedAt            DateTime  @db.Timestamptz(6)
+  deletedAt            DateTime? @db.Timestamptz(6)
+  tahun                Int?
+  status               Int?
+  id_mst_kode_trayek   Int?
+}
+
+model master_voyages {
+  id                   Int      @id @default(autoincrement())
+  master_trayek_id     Int?
+  master_voyage        Int?
+  master_voyage_year   Int?
+  master_voyage_target Int?
+  createdAt            DateTime @db.Timestamptz(6)
+  updatedAt            DateTime @db.Timestamptz(6)
+}
+
+model modules {
+  id          Int      @id @default(autoincrement())
+  module_name String?  @db.VarChar(255)
+  createdAt   DateTime @db.Timestamptz(6)
+  updatedAt   DateTime @db.Timestamptz(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model payment_channels {
+  id                   Int       @default(autoincrement())
+  payment_channel_name String    @db.VarChar
+  createdAt            DateTime  @db.Timestamptz(6)
+  status               Int?      @default(1)
+  deletedAt            DateTime? @db.Timestamptz(6)
+  updatedAt            DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+model pengaduan_replies {
+  id           Int       @id @default(autoincrement())
+  description  String?
+  user_id      Int?
+  pengaduan_id Int?
+  createdAt    DateTime  @db.Timestamptz(6)
+  updatedAt    DateTime  @db.Timestamptz(6)
+  deletedAt    DateTime? @db.Timestamptz(6)
+}
+
+model pengaduans {
+  id                 Int       @id @default(autoincrement())
+  user_id            Int?
+  subject            String?   @db.VarChar(255)
+  description        String?   @db.VarChar(255)
+  timestamp          DateTime? @db.Timestamptz(6)
+  status_is_open     Boolean?
+  users_operator_id  Int?
+  users_regulator_id Int?
+  createdAt          DateTime  @db.Timestamptz(6)
+  updatedAt          DateTime  @db.Timestamptz(6)
+  deletedAt          DateTime? @db.Timestamptz(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model ports {
+  id                    Int       @default(autoincrement())
+  port_name             String?   @db.VarChar(255)
+  port_code             String?   @db.VarChar(255)
+  provinces_province_id Int?
+  cities_city_id        Int?
+  port_long             String?   @db.VarChar(255)
+  port_lat              String?   @db.VarChar(255)
+  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @db.Timestamptz(6)
+  deletedAt             DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+model provinces {
+  id            Int      @id @default(autoincrement())
+  province_name String?  @db.VarChar(255)
+  createdAt     DateTime @db.Timestamptz(6)
+  updatedAt     DateTime @db.Timestamptz(6)
+}
+
+model revokeds {
+  id        Int      @id @default(autoincrement())
+  userid    Int?
+  issued    Int?
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+}
+
+model ruas_trayeks {
+  id              Int       @id @default(autoincrement())
+  kode_trayek     String?   @db.VarChar(255)
+  jaringan_trayek String?   @db.VarChar(255)
+  tahun           BigInt?
+  jarak           BigInt?
+  createdAt       DateTime? @db.Timestamp(6)
+  updatedAt       DateTime? @db.Timestamp(6)
+  deletedAt       DateTime? @db.Timestamp(6)
+}
+
+model schedule_quota {
+  id                  Int       @id @default(autoincrement())
+  schedule_id         Int?
+  animal_type_id      Int?
+  schedule_quota      Int?
+  schedule_quota_rest Int?
+  createdAt           DateTime  @db.Timestamptz(6)
+  updatedAt           DateTime  @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+}
+
+model schedule_rates {
+  id             Int       @id @default(autoincrement())
+  schedule_id    Int?
+  animal_type_id Int?
+  schedule_rates Decimal?  @db.Decimal(60, 0)
+  createdAt      DateTime  @db.Timestamptz(6)
+  updatedAt      DateTime  @db.Timestamptz(6)
+  deletedAt      DateTime? @db.Timestamptz(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model schedules {
+  id                           Int       @id @default(autoincrement())
+  trayek_id                    Int?
+  schedule_etd                 DateTime? @db.Timestamptz(6)
+  schedule_eta                 DateTime? @db.Timestamptz(6)
+  schedule_atd                 DateTime? @db.Timestamptz(6)
+  schedule_ata                 DateTime? @db.Timestamptz(6)
+  schedule_bumn_closing_time   DateTime? @db.Timestamptz(6)
+  schedule_swasta_closing_time DateTime? @db.Timestamptz(6)
+  users_operator_id            Int?
+  depot_id                     Int?
+  master_schedule_id           Int?
+  schedule_manifest_date       DateTime? @db.Timestamptz(6)
+  createdAt                    DateTime  @db.Timestamptz(6)
+  updatedAt                    DateTime  @db.Timestamptz(6)
+  deletedAt                    DateTime? @db.Timestamptz(6)
+  dokter_id                    Int?
+  is_approved                  Int?      @default(3)
+  operator_approval_id         Int?
+  alasan_penolakan             String?   @db.VarChar
+  filename                     String?   @db.VarChar
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model set_hargas {
+  id         Int       @default(autoincrement())
+  id_booking Int
+  harga      Int?
+  createdAt  DateTime? @db.Timestamptz(0)
+  updatedAt  DateTime? @db.Timestamptz(0)
+  deletedAt  DateTime? @db.Timestamptz(0)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tarif_rates {
+  id             Int       @default(autoincrement())
+  tarif_id       Int?
+  animal_type_id Int?
+  harga          Decimal?  @db.Decimal(60, 0)
+  createdAt      DateTime  @db.Timestamptz(6)
+  updatedAt      DateTime  @db.Timestamptz(6)
+  deletedAt      DateTime? @db.Timestamptz(6)
+
+  @@ignore
+}
+
+model track_logs {
+  id                             Int       @id @default(autoincrement())
+  bookings_id                    Int?
+  track_log_shipper_booking_date DateTime? @db.Timestamptz(6)
+  track_log_operator_date        DateTime? @db.Timestamptz(6)
+  track_log_shipper_taker_date   DateTime? @db.Timestamptz(6)
+  track_log_consignee_taker_date DateTime? @db.Timestamptz(6)
+  createdAt                      DateTime  @db.Timestamptz(6)
+  updatedAt                      DateTime  @db.Timestamptz(6)
+}
+
+model trayeks {
+  id                  Int       @id @default(autoincrement())
+  users_operator_id   Int?
+  master_trayek_id    Int?
+  port_origin_id      Int?
+  port_destination_id Int?
+  createdAt           DateTime  @db.Timestamptz(6)
+  updatedAt           DateTime  @db.Timestamptz(6)
+  deletedAt           DateTime? @db.Timestamptz(6)
+}
+
+model user_profiles {
+  id                                   Int       @id @default(autoincrement())
+  users_user_id                        Int?
+  user_profile_name                    String?   @db.VarChar(255)
+  user_profile_address                 String?   @db.VarChar(255)
+  user_profile_phone                   String?   @db.VarChar(255)
+  user_profile_fax                     String?   @db.VarChar(255)
+  user_profile_email                   String?   @db.VarChar(255)
+  user_profile_siup                    String?   @db.VarChar(255)
+  user_profile_siup_doc                String?   @db.VarChar(255)
+  user_profile_npwp                    String?   @db.VarChar(255)
+  user_profile_npwp_doc                String?   @db.VarChar(255)
+  user_profile_pic_name                String?   @db.VarChar(255)
+  user_profile_pic_email               String?   @db.VarChar(255)
+  user_profile_pic_hp                  String?   @db.VarChar(255)
+  user_profile_pic_phone               String?   @db.VarChar(255)
+  user_profile_pic_fax                 String?   @db.VarChar(255)
+  user_profile_surat_rekomendasi_pemda String?   @db.VarChar(255)
+  provinces_province_id                Int?
+  cities_city_id                       Int?
+  user_profile_person_in_charge        String?   @db.VarChar(255)
+  user_profile_company_type            String?   @db.VarChar(255)
+  user_profile_company_status          String?   @db.VarChar(255)
+  user_profile_signature               String?   @db.VarChar(255)
+  user_profile_company_logo            String?   @db.VarChar(255)
+  user_profile_officer_1_name          String?   @db.VarChar(255)
+  user_profile_officer_1_identity      String?   @db.VarChar(255)
+  user_profile_officer_1_phone         String?   @db.VarChar(255)
+  user_profile_officer_1_identity_pict String?   @db.VarChar(255)
+  user_profile_officer_2_name          String?   @db.VarChar(255)
+  user_profile_officer_2_identity      String?   @db.VarChar(255)
+  user_profile_officer_2_phone         String?   @db.VarChar(255)
+  user_profile_officer_2_identity_pict String?   @db.VarChar(255)
+  user_profile_officer_3_name          String?   @db.VarChar(255)
+  user_profile_officer_3_identity      String?   @db.VarChar(255)
+  user_profile_officer_3_phone         String?   @db.VarChar(255)
+  user_profile_officer_3_identity_pict String?   @db.VarChar(255)
+  user_profile_pmku_number             String?   @db.VarChar(255)
+  user_profile_pmku_date               DateTime? @db.Timestamptz(6)
+  user_profile_pob                     String?   @db.VarChar(255)
+  user_profile_dob                     DateTime? @db.Timestamptz(6)
+  user_profile_company_name            String?   @db.VarChar(255)
+  user_profile_position                String?   @db.VarChar(255)
+  user_profile_contract_number         String?   @db.VarChar(255)
+  user_profile_contract_start          DateTime? @db.Date
+  user_profile_contract_end            DateTime? @db.Date
+  user_profile_contract_adendum        String?   @db.VarChar(255)
+  createdAt                            DateTime  @db.Timestamptz(6)
+  updatedAt                            DateTime  @db.Timestamptz(6)
+  virtual_account                      Int?
+  institution_code                     String?   @db.VarChar(15)
+}
+
+model user_type_ex {
+  id       Int    @id
+  usertype String @db.VarChar(50)
+}
+
+model user_types {
+  id                         Int                             @id @default(autoincrement())
+  user_type_name             String?                         @db.VarChar(255)
+  user_type_form             enum_user_types_user_type_form?
+  user_type_show_on_register Boolean?
+  createdAt                  DateTime                        @db.Timestamptz(6)
+  updatedAt                  DateTime                        @db.Timestamptz(6)
+}
+
+model users {
+  id                     Int                     @id @default(autoincrement())
+  user_email             String?                 @db.VarChar(255)
+  user_password          String?                 @db.VarChar(255)
+  user_status            enum_users_user_status?
+  user_rejected_reason   String?                 @db.VarChar(255)
+  user_type_user_type_id Int?
+  createdAt              DateTime                @db.Timestamptz(6)
+  updatedAt              DateTime                @db.Timestamptz(6)
+  status                 Int?                    @default(1) @db.SmallInt
+}
+
+model users_ex {
+  id            Int    @id
+  username      String @db.VarChar(255)
+  password      String @db.VarChar(255)
+  status        Int
+  user_group_id Int
+}
+
+model vessel_cattle_room_schedules {
+  id                   Int       @id @default(autoincrement())
+  vessel_room_id       Int?
+  cattle_room_code     String?   @db.VarChar(255)
+  cattle_room_capacity Int?
+  available_capacity   Int?
+  createdAt            DateTime  @db.Timestamptz(6)
+  updatedAt            DateTime  @db.Timestamptz(6)
+  deletedAt            DateTime? @db.Timestamptz(6)
+}
+
+model vessel_cattle_rooms {
+  id                   Int       @id @default(autoincrement())
+  vessel_room_id       Int?
+  cattle_room_code     String?   @db.VarChar(255)
+  cattle_room_capacity Int?
+  createdAt            DateTime  @db.Timestamptz(6)
+  updatedAt            DateTime  @db.Timestamptz(6)
+  deletedAt            DateTime? @db.Timestamptz(6)
+  available_capacity   Int?      @default(0)
+}
+
+model vessel_room_schedules {
+  id                          Int       @id @default(autoincrement())
+  schedule_id                 Int?
+  master_vessel_room_id       Int?
+  vessel_id                   Int?
+  room_code                   String?   @db.VarChar(255)
+  room_name                   String?   @db.VarChar(255)
+  max_room_capacity           Int?
+  available_max_room_capacity Int?
+  url_image                   String?   @db.VarChar(255)
+  createdAt                   DateTime  @db.Timestamptz(6)
+  updatedAt                   DateTime  @db.Timestamptz(6)
+  deletedAt                   DateTime? @db.Timestamptz(6)
+}
+
+model vessel_rooms {
+  id                          Int       @id @default(autoincrement())
+  vessel_id                   Int?
+  room_code                   String?   @db.VarChar(255)
+  room_name                   String?   @db.VarChar(255)
+  max_room_capacity           Int?
+  url_image                   String?   @db.VarChar(255)
+  createdAt                   DateTime  @db.Timestamptz(6)
+  updatedAt                   DateTime  @db.Timestamptz(6)
+  deletedAt                   DateTime? @db.Timestamptz(6)
+  available_max_room_capacity Int?      @default(0)
+}
+
+model vessel_trackings {
+  id        Int       @id @default(autoincrement())
+  date      DateTime? @db.Timestamptz(6)
+  name      String?   @db.VarChar(255)
+  lat       String?   @db.VarChar(255)
+  lon       String?   @db.VarChar(255)
+  speed     String?   @db.VarChar(255)
+  heading   String?   @db.VarChar(255)
+  distance  String?   @db.VarChar(255)
+  port      String?   @db.VarChar(255)
+  ior       String?   @db.VarChar(255)
+  ips       String?   @db.VarChar(255)
+  imo       String?   @db.VarChar(255)
+  mmsi      String?   @db.VarChar(255)
+  txid      String?   @db.VarChar(255)
+  createdAt DateTime  @db.Timestamptz(6)
+  updatedAt DateTime  @db.Timestamptz(6)
+  deletedAt DateTime? @db.Timestamptz(6)
+}
+
+model vessels {
+  id                Int       @id @default(autoincrement())
+  vessel_name       String?   @db.VarChar(255)
+  vessel_device_id  String?   @db.VarChar(255)
+  vessel_photo      String?   @db.VarChar(255)
+  users_operator_id Int?
+  createdAt         DateTime  @db.Timestamptz(6)
+  updatedAt         DateTime  @db.Timestamptz(6)
+  deletedAt         DateTime? @db.Timestamptz(6)
+}
+
+enum enum_user_types_user_type_form {
+  consignee
+  shipper
+  operator
+  regulator
+  visitor
+  disperindag
+  kemendag
+  kementan
+  disnak
+  ksop
+}
+
+enum enum_users_user_status {
+  waiting
+  approved
+  rejected
+}
