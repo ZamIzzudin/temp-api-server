@@ -1,0 +1,11 @@
+services:
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sitolaut-api-server
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
